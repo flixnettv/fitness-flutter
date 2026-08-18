@@ -340,33 +340,6 @@ class WgerApiClient {
     }
   }
 
-  static String _todayIso() => DateTime.now().toIso8601String().substring(0, 10);
-
-  static String _endIso() => DateTime.now()
-      .add(const Duration(days: 30))
-      .toIso8601String()
-      .substring(0, 10);
-
-  Future<Map<String, dynamic>?> getWeightEntries() async {
-    try {
-      final res = await _dio.get(
-        '/api/v2/weightentry/',
-        queryParameters: {'limit': 30},
-      );
-      return res.data as Map<String, dynamic>?;
-    } catch (e) {
-      try {
-        final res = await _dio.get(
-          '/api/v2/weight/',
-          queryParameters: {'limit': 30},
-        );
-        return res.data as Map<String, dynamic>?;
-      } catch (e2) {
-        return null;
-      }
-    }
-  }
-
   static String _langId(String lang) => lang == 'ar' ? '17' : '2';
 
   static String get baseUrl => _baseUrl;
