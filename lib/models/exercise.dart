@@ -19,9 +19,8 @@ class Exercise {
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     final translations = json['translations'] as List<dynamic>? ?? [];
-    final translation = translations.isNotEmpty &&
-            translations.first is Map<String, dynamic>
-        ? translations.first as Map<String, dynamic>
+    final translation = translations.isNotEmpty
+        ? Map<String, dynamic>.from(translations.first as Map)
         : <String, dynamic>{};
 
     String stripHtml(String? html) =>
@@ -29,7 +28,7 @@ class Exercise {
 
     final muscles = <String>[];
     for (final item in json['muscles'] as List<dynamic>? ?? []) {
-      if (item is Map<String, dynamic>) {
+      if (item is Map) {
         final name = item['name'];
         if (name is String && name.isNotEmpty) muscles.add(name);
       }
@@ -37,21 +36,21 @@ class Exercise {
 
     final equipment = <String>[];
     for (final item in json['equipment'] as List<dynamic>? ?? []) {
-      if (item is Map<String, dynamic>) {
+      if (item is Map) {
         final name = item['name'];
         if (name is String && name.isNotEmpty) equipment.add(name);
       }
     }
 
     final category = json['category'];
-    final categoryName = category is Map<String, dynamic>
+    final categoryName = category is Map
         ? (category['name'] as String? ?? '')
         : '';
 
     String imageUrl = '';
     final images = json['images'] as List<dynamic>? ?? [];
-    if (images.isNotEmpty && images.first is Map<String, dynamic>) {
-      final image = (images.first as Map<String, dynamic>)['image'];
+    if (images.isNotEmpty && images.first is Map) {
+      final image = (images.first as Map)['image'];
       if (image is String) imageUrl = image;
     }
 

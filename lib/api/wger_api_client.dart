@@ -211,7 +211,8 @@ class WgerApiClient {
         '/api/v2/routine/',
         data: {
           'name': name,
-          'day': '2026-08-18',
+          'start': _todayIso(),
+          'end': _endIso(),
         },
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -219,6 +220,13 @@ class WgerApiClient {
       return false;
     }
   }
+
+  static String _todayIso() => DateTime.now().toIso8601String().substring(0, 10);
+
+  static String _endIso() => DateTime.now()
+      .add(const Duration(days: 30))
+      .toIso8601String()
+      .substring(0, 10);
 
   Future<Map<String, dynamic>?> getWeightEntries() async {
     try {

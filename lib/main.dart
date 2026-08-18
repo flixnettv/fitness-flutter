@@ -12,10 +12,12 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   final isDark = prefs.getBool('dark_mode') ?? true;
   final isArabic = prefs.getString('language') != 'en';
+  final loggedIn = prefs.getString('wger_access_token') != null;
   runApp(FitProApp(
     prefs: prefs,
     isDark: isDark,
     isArabic: isArabic,
+    loggedIn: loggedIn,
   ));
 }
 
@@ -55,11 +57,13 @@ class FitProApp extends StatelessWidget {
     required this.prefs,
     required this.isDark,
     required this.isArabic,
+    required this.loggedIn,
   });
 
   final SharedPreferences prefs;
   final bool isDark;
   final bool isArabic;
+  final bool loggedIn;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +75,7 @@ class FitProApp extends StatelessWidget {
           return MaterialApp(
             title: 'FitPro',
             debugShowCheckedModeBanner: false,
-            initialRoute: '/root_app',
+            initialRoute: loggedIn ? '/root_app' : '/login',
             onGenerateRoute: generateRoute,
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
