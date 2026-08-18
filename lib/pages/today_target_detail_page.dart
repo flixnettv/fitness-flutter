@@ -137,7 +137,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                const SvgPicture.asset("assets/images/glass.svg"),
+                                SvgPicture.asset("assets/images/glass.svg"),
                                 Text(
                                   AppStrings.t(context, 'waterIntake'),
                                   style: const TextStyle(fontSize: 13),
@@ -159,7 +159,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                const SvgPicture.asset(
+                                SvgPicture.asset(
                                   "assets/images/foot_step.svg",
                                 ),
                                 const Text(

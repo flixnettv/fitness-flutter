@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'l10n/app_strings.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
 

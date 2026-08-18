@@ -24,7 +24,7 @@ class Exercise {
         : <String, dynamic>{};
 
     String stripHtml(String? html) =>
-        RegExp(r'<[^>]*>').replaceAll(html ?? '', '').trim();
+        (html ?? '').replaceAll(RegExp(r'<[^>]*>'), '').trim();
 
     final muscles = <String>[];
     for (final item in json['muscles'] as List<dynamic>? ?? []) {

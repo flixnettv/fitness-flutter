@@ -119,7 +119,6 @@ class RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Scaffold(
       body: Container(
         width: double.infinity,

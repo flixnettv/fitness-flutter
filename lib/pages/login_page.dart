@@ -283,7 +283,7 @@ class LoginPageState extends State<LoginPage> {
                               color: onSurface.withOpacity(0.1),
                             ),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: SvgPicture.asset(
                               "assets/images/google_icon.svg",
                               width: 20,
@@ -302,7 +302,7 @@ class LoginPageState extends State<LoginPage> {
                               color: onSurface.withOpacity(0.1),
                             ),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: SvgPicture.asset(
                               "assets/images/facebook_icon.svg",
                               width: 20,

@@ -27,7 +27,6 @@ LineChartData workoutProgressData({
         sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          margin: 8,
           getTitlesWidget: (value, meta) {
             String text = '';
             switch (value.toInt()) {
@@ -58,13 +57,12 @@ LineChartData workoutProgressData({
         ),
       ),
       leftTitles: const AxisTitles(
-        sideTitles: SideTitles(showTitles: false, reservedSize: 28, margin: 12),
+        sideTitles: SideTitles(showTitles: false, reservedSize: 28),
       ),
       rightTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 28,
-          margin: 12,
           getTitlesWidget: (value, meta) {
             String text = '';
             switch (value.toInt()) {
@@ -109,7 +107,7 @@ LineChartData workoutProgressData({
           FlSpot(11, 4),
         ],
         isCurved: true,
-        colors: colors,
+        color: colors.first,
         barWidth: 2,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
@@ -125,7 +123,7 @@ LineChartData workoutProgressData({
           FlSpot(11, 4),
         ],
         isCurved: true,
-        colors: [third.withOpacity(0.5)],
+        color: third.withOpacity(0.5),
         barWidth: 1,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
