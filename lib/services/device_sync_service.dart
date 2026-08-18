@@ -76,15 +76,7 @@ class DeviceSyncService {
 
     _reportProgress(0.1, 'Fetching health data...');
 
-    final types = _getReadTypes();
     final syncedUuids = await _getSyncedUuids();
-
-    try {
-      final data = await _health.getHealthDataFromTypes(
-        start, 
-        end, 
-        _getReadTypes(),
-      );
       if (data.isEmpty) {
         _reportProgress(1.0, 'No new data to sync');
         await prefs.setInt(_lastSyncKey, DateTime.now().millisecondsSinceEpoch);

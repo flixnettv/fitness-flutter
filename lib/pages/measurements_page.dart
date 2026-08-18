@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import 'package:fitness_flutter/api/wger_api_client.dart';
@@ -68,8 +67,6 @@ class MeasurementsPageState extends State<MeasurementsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.t(context, 'measurements')),

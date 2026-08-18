@@ -1,5 +1,3 @@
-import 'package:fitness_flutter/api/wger_api_client.dart';
-
 enum DeviceMetricType {
   weight,
   bodyFatPercentage,

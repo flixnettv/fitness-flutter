@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:fitness_flutter/api/wger_api_client.dart';
 import 'package:fitness_flutter/l10n/app_strings.dart';

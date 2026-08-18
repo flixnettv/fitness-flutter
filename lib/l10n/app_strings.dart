@@ -75,9 +75,6 @@ class AppStrings {
     'entrySaved': 'Entry saved successfully',
     'measurementCategories': 'Measurement Categories',
     'viewHistory': 'View History',
-    'syncComplete': 'Sync completed',
-    'syncFailed': 'Sync failed',
-    'entrySaved': 'Entry saved',
   };
 
   static const Map<String, String> ar = {
@@ -152,9 +149,6 @@ class AppStrings {
     'entrySaved': 'تم حفظ الإدخال بنجاح',
     'measurementCategories': 'فئات القياسات',
     'viewHistory': 'عرض السجل',
-    'syncComplete': 'اكتملت المزامنة',
-    'syncFailed': 'فشلت المزامنة',
-    'entrySaved': 'تم الحفظ',
   };
 
   static String t(BuildContext context, String key) {
