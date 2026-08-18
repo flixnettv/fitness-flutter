@@ -58,7 +58,7 @@ LineChartData sleepData({required List<Color> colors, required Color third}) {
           FlSpot(11.6, 4.6),
         ],
         isCurved: true,
-        colors: colors,
+        color: colors.first,
         barWidth: 2,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
