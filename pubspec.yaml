@@ -1,7 +1,6 @@
 name: fitness_flutter
-description: Flutter fitness app UI connected to wger API.
-publish_to: 'none'
-
+description: Flutter fitness app UI connected to wger API with device sync.
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -19,6 +18,15 @@ dependencies:
   dio: ^5.11.0
   provider: ^6.1.5
   shared_preferences: ^2.5.5
+
+  # Device sync packages
+  health: ^13.3.2
+  flutter_blue_plus: ^2.3.12
+  permission_handler: ^11.3.1
+  intl: ^0.20.2
+  package_info_plus: ^8.0.0
+  qr_code_scanner: ^1.0.1
+  workmanager: ^0.5.2
 
 dev_dependencies:
   flutter_test:
