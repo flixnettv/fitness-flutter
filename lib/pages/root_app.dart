@@ -2,6 +2,7 @@ import 'package:fitness_flutter/api/wger_api_client.dart';
 import 'package:fitness_flutter/l10n/app_strings.dart';
 import 'package:fitness_flutter/main.dart';
 import 'package:fitness_flutter/pages/home_page.dart';
+import 'package:fitness_flutter/pages/devices_page.dart';
 import 'package:fitness_flutter/theme/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class RootAppState extends State<RootApp> {
       children: const [
         HomePage(),
         _ChartPage(),
-        _CameraPage(),
+        DevicesPage(),
         _ProfilePage(),
       ],
     );
@@ -41,13 +42,13 @@ class RootAppState extends State<RootApp> {
     final items = [
       Icons.home,
       Icons.pie_chart,
-      Icons.camera_alt,
+      Icons.devices,
       Icons.person,
     ];
     final labels = [
       AppStrings.t(context, 'home'),
       AppStrings.t(context, 'charts'),
-      AppStrings.t(context, 'camera'),
+      AppStrings.t(context, 'devices'),
       AppStrings.t(context, 'profile'),
     ];
     final onSurface = Theme.of(context).colorScheme.onSurface;
@@ -219,31 +220,6 @@ class _ChartPage extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CameraPage extends StatelessWidget {
-  const _CameraPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.t(context, 'camera'))),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.camera_alt_outlined,
-              size: 64,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-            ),
-            const SizedBox(height: 12),
-            Text(AppStrings.t(context, 'camera')),
           ],
         ),
       ),

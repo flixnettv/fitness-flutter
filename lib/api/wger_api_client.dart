@@ -248,6 +248,125 @@ class WgerApiClient {
     }
   }
 
+  // Create a weight entry
+  Future<Map<String, dynamic>?> createWeightEntry(double weight, DateTime date) async {
+    try {
+      final res = await _dio.post(
+        '/api/v2/weightentry/',
+        data: {
+          'date': date.toIso8601String().substring(0, 10),
+          'weight': weight,
+        },
+      );
+      return res.data as Map<String, dynamic>?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Get measurement categories
+  Future<List<dynamic>> getMeasurementCategories() async {
+    try {
+      final res = await _dio.get('/api/v2/measurement-category/');
+      final data = res.data as Map<String, dynamic>;
+      return data['results'] as List<dynamic>? ?? [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Create a measurement category
+  Future<Map<String, dynamic>?> createMeasurementCategory({
+    required String name,
+    required String unit,
+    bool isWeight = false,
+  }) async {
+    try {
+      final res = await _dio.post(
+        '/api/v2/measurement-category/',
+        data: {
+          'name': name,
+          'unit': unit,
+          'is_weight': isWeight,
+        },
+      );
+      return res.data as Map<String, dynamic>?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Create a measurement (body fat, water, lean mass, etc.)
+  Future<Map<String, dynamic>?> createMeasurement({
+    required String categoryName,
+    required double value,
+    required String unit,
+    required DateTime date,
+    String notes = '',
+  }) async {
+    try {
+      // First find or create the category
+      final categories = await getMeasurementCategories();
+      Map<String, dynamic>? category;
+      for (final cat in categories) {
+        if (cat is Map && cat['name'] == categoryName) {
+          category = Map<String, dynamic>.from(cat);
+          break;
+        }
+      }
+
+      if (category == null) {
+        // Try to create the category
+        final created = await createMeasurementCategory(name: categoryName, unit: unit);
+        if (created != null) {
+          category = created;
+        }
+      }
+
+      if (category == null) return null;
+
+      final res = await _dio.post(
+        '/api/v2/measurement/',
+        data: {
+          'category': category['id'],
+          'date': date.toIso8601String(),
+          'value': value,
+          'notes': notes,
+        },
+      );
+      return res.data as Map<String, dynamic>?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String _todayIso() => DateTime.now().toIso8601String().substring(0, 10);
+
+  static String _endIso() => DateTime.now()
+      .add(const Duration(days: 30))
+      .toIso8601String()
+      .substring(0, 10);
+
+  Future<Map<String, dynamic>?> getWeightEntries() async {
+    try {
+      final res = await _dio.get(
+        '/api/v2/weightentry/',
+        queryParameters: {'limit': 30},
+      );
+      return res.data as Map<String, dynamic>?;
+    } catch (e) {
+      try {
+        final res = await _dio.get(
+          '/api/v2/weight/',
+          queryParameters: {'limit': 30},
+        );
+        return res.data as Map<String, dynamic>?;
+      } catch (e2) {
+        return null;
+      }
+    }
+  }
+
   static String _langId(String lang) => lang == 'ar' ? '17' : '2';
 
   static String get baseUrl => _baseUrl;
