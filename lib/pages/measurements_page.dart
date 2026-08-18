@@ -116,16 +116,8 @@ class MeasurementsPageState extends State<MeasurementsPage> {
                     // Body Fat Chart
                     _buildSectionTitle('Body Fat %'),
                     const SizedBox(height: 12),
-                    final fatSpots = _getBodyFatSpots();
-                    if (fatSpots.isNotEmpty)
-                      _buildLineChart(
-                        spots: fatSpots,
-                        color: Colors.orange,
-                        title: 'Body Fat %',
-                        yLabel: '%',
-                      )
-                    else
-                      _buildEmptyState('No body fat data yet'),
+                    _buildBodyFatChart(),
+                    const SizedBox(height: 24),
                     const SizedBox(height: 24),
 
                     // Water & Lean Mass
@@ -353,6 +345,20 @@ class MeasurementsPageState extends State<MeasurementsPage> {
         ),
       ],
     );
+  }
+
+  Widget _buildBodyFatChart() {
+    final fatSpots = _getBodyFatSpots();
+    if (fatSpots.isNotEmpty) {
+      return _buildLineChart(
+        spots: fatSpots,
+        color: Colors.orange,
+        title: 'Body Fat %',
+        yLabel: '%',
+      );
+    } else {
+      return _buildEmptyState('No body fat data yet');
+    }
   }
 
   Widget _buildSmallChart({
