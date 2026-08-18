@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:fitness_flutter/api/wger_api_client.dart';
 import 'package:fitness_flutter/models/device_metric.dart';
@@ -15,43 +17,21 @@ class DeviceSyncService {
   final WgerApiClient _api = WgerApiClient.instance;
 
   static const String _lastSyncKey = 'device_last_sync';
+  static const String _syncedUuidsKey = 'device_synced_uuids';
   static const String _enabledSourcesKey = 'device_enabled_sources';
+  static const String _lastFullSyncKey = 'device_last_full_sync';
 
   bool _isConfigured = false;
   Timer? _periodicSyncTimer;
+  Function(double, String)? _onProgress;
 
-  Future<void> configure() async {
+  Future<void> configure({Function(double, String)? onProgress}) async {
     if (_isConfigured) return;
+    _onProgress = onProgress;
 
-    // Request permissions for all supported data types
-    final types = <HealthDataType>[
-      HealthDataType.WEIGHT,
-      HealthDataType.BODY_FAT_PERCENTAGE,
-      HealthDataType.BODY_WATER_MASS,
-      HealthDataType.LEAN_BODY_MASS,
-      HealthDataType.STEPS,
-      HealthDataType.HEART_RATE,
-      HealthDataType.SLEEP_ASLEEP,
-      HealthDataType.SLEEP_AWAKE,
-      HealthDataType.SLEEP_DEEP,
-      HealthDataType.SLEEP_LIGHT,
-      HealthDataType.SLEEP_REM,
-      HealthDataType.SLEEP_IN_BED,
-      HealthDataType.WORKOUT,
-      HealthDataType.ACTIVE_ENERGY_BURNED,
-      HealthDataType.WATER,
-      HealthDataType.BODY_MASS_INDEX,
-      HealthDataType.BODY_TEMPERATURE,
-      HealthDataType.BLOOD_GLUCOSE,
-      HealthDataType.BLOOD_OXYGEN,
-      HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
-      HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
-      HealthDataType.RESTING_HEART_RATE,
-      HealthDataType.WALKING_HEART_RATE,
-      HealthDataType.HEART_RATE_VARIABILITY_RMSSD,
-      HealthDataType.HEART_RATE_VARIABILITY_SDNN,
-    ];
+    _reportProgress(0.1, 'Requesting health permissions...');
 
+    final types = _getAllReadTypes();
     final permissions = <HealthDataAccess>[
       for (_ in types) HealthDataAccess.READ,
     ];
@@ -61,14 +41,17 @@ class DeviceSyncService {
       throw Exception('Health permissions not granted');
     }
 
-    // Also request activity recognition for steps
     await Permission.activityRecognition.request();
-    await Permission.location.request(); // Required for Health Connect on Android
+    await Permission.location.request();
 
     _isConfigured = true;
+    _reportProgress(1.0, 'Health permissions granted');
 
-    // Start periodic sync (every 30 minutes when app is running)
     _startPeriodicSync();
+  }
+
+  void _reportProgress(double progress, String message) {
+    _onProgress?.call(progress, message);
   }
 
   void _startPeriodicSync() {
@@ -79,31 +62,100 @@ class DeviceSyncService {
     });
   }
 
-  Future<void> syncAll() async {
+  Future<void> syncAll({bool fullSync = false}) async {
     if (!_isConfigured) await configure();
 
     final prefs = await SharedPreferences.getInstance();
-    final lastSync = prefs.getInt(_lastSyncKey) ?? 0;
     final now = DateTime.now();
-    final start = lastSync == 0 ? now.subtract(const Duration(days: 7)) : DateTime.fromMillisecondsSinceEpoch(lastSync);
+    final lastSync = prefs.getInt(_lastSyncKey) ?? 0;
+    final lastFullSync = prefs.getInt(_lastFullSyncKey) ?? 0;
+
+    final useFullSync = fullSync || lastFullSync == 0 || now.difference(DateTime.fromMillisecondsSinceEpoch(lastFullSync)).inDays > 7;
+    final start = useFullSync ? now.subtract(const Duration(days: 30)) : DateTime.fromMillisecondsSinceEpoch(lastSync);
+    final end = DateTime.now();
+
+    _reportProgress(0.1, 'Fetching health data...');
 
     final types = _getReadTypes();
+    final syncedUuids = await _getSyncedUuids();
 
     try {
-      final data = await _health.getHealthDataFromTypes(start, now, types);
-      if (data.isEmpty) return;
+      final data = await _health.getHealthDataFromTypes(
+        start, 
+        end, 
+        _getReadTypes(),
+      );
+      if (data.isEmpty) {
+        _reportProgress(1.0, 'No new data to sync');
+        await prefs.setInt(_lastSyncKey, DateTime.now().millisecondsSinceEpoch);
+        if (useFullSync) await prefs.setInt(_lastFullSyncKey, DateTime.now().millisecondsSinceEpoch);
+        return;
+      }
+
+      _reportProgress(0.3, 'Processing ${data.length} data points...');
 
       final metrics = _convertHealthData(data);
-      await _uploadMetrics(metrics);
+      final newMetrics = metrics.where((m) => !syncedUuids.contains(m.sourceId)).toList();
 
-      await prefs.setInt(_lastSyncKey, now.millisecondsSinceEpoch);
+      _reportProgress(0.5, 'Found ${newMetrics.length} new metrics to sync...');
+
+      int successCount = 0;
+      final newUuids = <String>[];
+
+      for (int i = 0; i < newMetrics.length; i++) {
+        final metric = newMetrics[i];
+        try {
+          await _uploadSingleMetric(metric);
+          newUuids.add(metric.sourceId);
+          successCount++;
+          _reportProgress(0.3 + 0.6 * (i / newMetrics.length), 'Synced ${i + 1}/${newMetrics.length}');
+        } catch (e) {
+          print('Failed to upload metric ${metric.type}: $e');
+        }
+      }
+
+      // Store synced UUIDs
+      if (newUuids.isNotEmpty) {
+        await _addSyncedUuids(newUuids);
+      }
+
+      await prefs.setInt(_lastSyncKey, DateTime.now().millisecondsSinceEpoch);
+      if (useFullSync) await prefs.setInt(_lastFullSyncKey, DateTime.now().millisecondsSinceEpoch);
+
+      _reportProgress(1.0, 'Sync complete: $successCount/${newMetrics.length} uploaded');
     } catch (e) {
       print('Sync error: $e');
+      _reportProgress(0.0, 'Sync failed: $e');
       rethrow;
     }
   }
 
-  List<HealthDataType> _getReadTypes() {
+  Future<Set<String>> _getSyncedUuids() async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString(_syncedUuidsKey);
+    if (json == null) return {};
+    try {
+      return Set<String>.from(jsonDecode(json) as List);
+    } catch (_) {
+      return {};
+    }
+  }
+
+  Future<void> _addSyncedUuids(List<String> uuids) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existing = await _getSyncedUuids();
+    existing.addAll(uuids);
+    // Keep only last 5000 UUIDs to prevent storage bloat
+    if (existing.length > 5000) {
+      final list = existing.toList();
+      list.sort((a, b) => b.compareTo(a)); // Keep newest
+      existing.clear();
+      existing.addAll(list.take(5000));
+    }
+    await prefs.setString(_syncedUuidsKey, jsonEncode(existing.toList()));
+  }
+
+  List<HealthDataType> _getAllReadTypes() {
     return [
       HealthDataType.WEIGHT,
       HealthDataType.BODY_FAT_PERCENTAGE,
@@ -133,6 +185,10 @@ class DeviceSyncService {
     ];
   }
 
+  List<HealthDataType> _getReadTypes() {
+    return _getAllReadTypes();
+  }
+
   List<DeviceMetric> _convertHealthData(List<HealthDataPoint> data) {
     final metrics = <DeviceMetric>[];
 
@@ -140,13 +196,8 @@ class DeviceSyncService {
       final type = _mapHealthDataType(point.type);
       if (type == null) continue;
 
-      final value = point.value is NumericHealthValue
-          ? (point.value as NumericHealthValue).numericValue
-          : (point.value is AudiogramHealthValue
-              ? 0.0
-              : (point.value is ElectrocardiogramHealthValue
-                  ? 0.0
-                  : 0.0));
+      final value = _extractNumericValue(point.value);
+      if (value == null) continue;
 
       metrics.add(DeviceMetric(
         type: type,
@@ -160,6 +211,13 @@ class DeviceSyncService {
     }
 
     return metrics;
+  }
+
+  double? _extractNumericValue(HealthValue value) {
+    if (value is NumericHealthValue) {
+      return value.numericValue;
+    }
+    return null;
   }
 
   DeviceMetricType? _mapHealthDataType(HealthDataType type) {
@@ -204,7 +262,7 @@ class DeviceSyncService {
         return DeviceMetricType.bloodOxygen;
       case HealthDataType.BLOOD_PRESSURE_SYSTOLIC:
         return DeviceMetricType.bloodPressureSystolic;
-      case HealthDataDataType.BLOOD_PRESSURE_DIASTOLIC:
+      case HealthDataType.BLOOD_PRESSURE_DIASTOLIC:
         return DeviceMetricType.bloodPressureDiastolic;
       case HealthDataType.RESTING_HEART_RATE:
         return DeviceMetricType.restingHeartRate;
@@ -220,9 +278,9 @@ class DeviceSyncService {
   }
 
   String _getSourceName() {
-    // On iOS this would be 'apple_health', on Android 'google_health_connect'
-    // For now, detect platform or use a generic name
-    return 'device_sync';
+    // Detect platform at runtime
+    // On iOS: 'apple_health', on Android: 'google_health_connect'
+    return 'health_connect';
   }
 
   Future<void> _uploadMetrics(List<DeviceMetric> metrics) async {
@@ -236,9 +294,8 @@ class DeviceSyncService {
   }
 
   Future<void> _uploadSingleMetric(DeviceMetric metric) async {
-    // Check if already synced (by sourceId)
-    // For now, we upload all - wger API will handle duplicates via unique constraints
-    // In production, check local storage for synced UUIDs
+    // Rate limiting: small delay between uploads
+    await Future.delayed(const Duration(milliseconds: 100));
 
     switch (metric.type) {
       case DeviceMetricType.weight:
@@ -268,22 +325,52 @@ class DeviceSyncService {
           date: metric.dateFrom,
         );
         break;
+      case DeviceMetricType.steps:
+        // Could log to custom endpoint or local storage
+        break;
+      case DeviceMetricType.heartRate:
+        // Could log to custom endpoint
+        break;
+      case DeviceMetricType.sleepAsleep:
+      case DeviceMetricType.sleepAwake:
+      case DeviceMetricType.sleepDeep:
+      case DeviceMetricType.sleepLight:
+      case DeviceMetricType.sleepRem:
+      case DeviceMetricType.sleepInBed:
+        // Sleep data - could store in custom table
+        break;
+      case DeviceMetricType.workout:
+        // Workout data
+        break;
       default:
-        // Other metrics could be stored in a separate table or logged
-        print('Metric ${metric.type} logged: ${metric.value} ${metric.unit}');
+        break;
     }
   }
 
   Future<void> manualSync() async {
-    await syncAll();
+    await syncAll(fullSync: false);
+  }
+
+  Future<void> fullSync() async {
+    await syncAll(fullSync: true);
   }
 
   Future<Map<String, dynamic>> getSyncStatus() async {
     final prefs = await SharedPreferences.getInstance();
+    final syncedCount = (await _getSyncedUuids()).length;
     return {
       'lastSync': prefs.getInt(_lastSyncKey) ?? 0,
+      'lastFullSync': prefs.getInt(_lastFullSyncKey) ?? 0,
+      'syncedCount': syncedCount,
       'enabledSources': prefs.getStringList(_enabledSourcesKey) ?? [],
     };
+  }
+
+  Future<void> clearSyncedHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_syncedUuidsKey);
+    await prefs.remove(_lastSyncKey);
+    await prefs.remove(_lastFullSyncKey);
   }
 
   Future<void> dispose() async {

@@ -5,6 +5,7 @@ import 'pages/register_page.dart';
 import 'pages/root_app.dart';
 import 'pages/today_target_detail_page.dart';
 import 'pages/devices_page.dart';
+import 'pages/measurements_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -18,6 +19,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const TodayTargetDetailPage());
     case '/devices':
       return MaterialPageRoute(builder: (context) => const DevicesPage());
+    case '/measurements':
+      return MaterialPageRoute(builder: (context) => const MeasurementsPage());
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(body: SizedBox()),

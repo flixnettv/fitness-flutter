@@ -388,9 +388,22 @@ class DevicesPageState extends State<DevicesPage> {
             // Measurement categories
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                AppStrings.t(context, 'measurementCategories'),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppStrings.t(context, 'measurementCategories'),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => Navigator.pushNamed(context, '/measurements'),
+                    icon: const Icon(Icons.history, size: 18),
+                    label: Text(AppStrings.t(context, 'viewHistory')),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.primary(context),
+                    ),
+                  ),
+                ],
               ),
             ),
             if (_categories.isEmpty)
