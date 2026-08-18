@@ -49,7 +49,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
     return _weightEntries.asMap().entries.map((e) {
       final i = e.key.toDouble();
       final entry = e.value as Map<String, dynamic>;
-      return FlSpot(i, (entry['weight'] as String?)?.doubleValue() ?? 0.0);
+      return FlSpot(i, double.tryParse(entry['weight'] as String? ?? '') ?? 0.0);
     }).toList();
   }
 
@@ -61,7 +61,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
     return fatEntries.asMap().entries.map((e) {
       final i = e.key.toDouble();
       final entry = e.value as Map<String, dynamic>;
-      return FlSpot(i, (entry['value'] as String?)?.doubleValue() ?? 0.0);
+      return FlSpot(i, double.tryParse(entry['value'] as String? ?? '') ?? 0.0);
     }).toList();
   }
 
@@ -193,7 +193,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
                       ),
                     );
                   }
-                  return const SideTitleWidget(meta: null, child: SizedBox());
+                  return const SizedBox.shrink();
                 },
               ),
             ),
@@ -335,7 +335,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
         Expanded(
           child: waterEntries.isNotEmpty
               ? _buildSmallChart(
-                  spots: waterEntries.asMap().entries.map((e) => FlSpot(e.key.toDouble(), (e.value['value'] as String?)?.doubleValue() ?? 0.0)).toList(),
+                  spots: waterEntries.asMap().entries.map((e) => FlSpot(e.key.toDouble(), double.tryParse(e.value['value'] as String? ?? '') ?? 0.0)).toList(),
                   color: Colors.blue,
                   title: 'Water (kg)',
                 )
@@ -345,7 +345,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
         Expanded(
           child: leanEntries.isNotEmpty
               ? _buildSmallChart(
-                  spots: leanEntries.asMap().entries.map((e) => FlSpot(e.key.toDouble(), (e.value['value'] as String?)?.doubleValue() ?? 0.0)).toList(),
+                  spots: leanEntries.asMap().entries.map((e) => FlSpot(e.key.toDouble(), double.tryParse(e.value['value'] as String? ?? '') ?? 0.0)).toList(),
                   color: Colors.green,
                   title: 'Lean Mass (kg)',
                 )

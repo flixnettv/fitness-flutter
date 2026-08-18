@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:fitness_flutter/api/wger_api_client.dart';
 import 'package:fitness_flutter/models/device_metric.dart';
@@ -33,7 +32,7 @@ class DeviceSyncService {
 
     final types = _getAllReadTypes();
     final permissions = <HealthDataAccess>[
-      for (_ in types) HealthDataAccess.READ,
+      for (final t in types) HealthDataAccess.READ,
     ];
 
     final granted = await _health.requestAuthorization(types, permissions: permissions);
@@ -77,6 +76,9 @@ class DeviceSyncService {
     _reportProgress(0.1, 'Fetching health data...');
 
     final syncedUuids = await _getSyncedUuids();
+
+    try {
+      final data = await _health.getHealthDataFromTypes(start, end, _getReadTypes());
       if (data.isEmpty) {
         _reportProgress(1.0, 'No new data to sync');
         await prefs.setInt(_lastSyncKey, DateTime.now().millisecondsSinceEpoch);
@@ -194,7 +196,7 @@ class DeviceSyncService {
       metrics.add(DeviceMetric(
         type: type,
         value: value,
-        unit: point.unit.stringValue,
+        unit: point.unit.toString(),
         dateFrom: point.dateFrom,
         dateTo: point.dateTo,
         source: _getSourceName(),
@@ -207,7 +209,7 @@ class DeviceSyncService {
 
   double? _extractNumericValue(HealthValue value) {
     if (value is NumericHealthValue) {
-      return value.numericValue;
+      return value.numericValue.toDouble();
     }
     return null;
   }
@@ -353,7 +355,7 @@ class DeviceSyncService {
     return {
       'lastSync': prefs.getInt(_lastSyncKey) ?? 0,
       'lastFullSync': prefs.getInt(_lastFullSyncKey) ?? 0,
-      'syncedCount': syncedCount,
+      'syncedCount': (await _getSyncedUuids()).length,
       'enabledSources': prefs.getStringList(_enabledSourcesKey) ?? [],
     };
   }

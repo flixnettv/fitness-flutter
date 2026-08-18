@@ -170,11 +170,11 @@ class WgerApiClient {
     }
   }
 
-  Future<Map<String, dynamic>?> getMeasurements() async {
+  Future<Map<String, dynamic>?> getMeasurements({int? limit}) async {
     try {
       final res = await _dio.get(
         '/api/v2/measurement/',
-        queryParameters: {'limit': 100},
+        queryParameters: {'limit': limit ?? 100},
       );
       return res.data as Map<String, dynamic>?;
     } catch (e) {
@@ -228,18 +228,18 @@ class WgerApiClient {
       .toIso8601String()
       .substring(0, 10);
 
-  Future<Map<String, dynamic>?> getWeightEntries() async {
+  Future<Map<String, dynamic>?> getWeightEntries({int? limit}) async {
     try {
       final res = await _dio.get(
         '/api/v2/weightentry/',
-        queryParameters: {'limit': 30},
+        queryParameters: {'limit': limit ?? 30},
       );
       return res.data as Map<String, dynamic>?;
     } catch (e) {
       try {
         final res = await _dio.get(
           '/api/v2/weight/',
-          queryParameters: {'limit': 30},
+          queryParameters: {'limit': limit ?? 30},
         );
         return res.data as Map<String, dynamic>?;
       } catch (e2) {
