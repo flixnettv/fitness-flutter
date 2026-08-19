@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -69,8 +69,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'
-          channel: 'stable'
+          flutter-version: "3.47.0"
+          channel: "stable"
 
       - name: Get dependencies
         run: flutter pub get
@@ -88,7 +88,7 @@ jobs:
   deploy-coolify:
     name: Deploy to Coolify
     needs: [build-web]
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == "push" && startsWith(github.ref, "refs/tags/v")
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Coolify deploy
@@ -98,3 +98,4 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"force": true}' \
             -w "\nHTTP %{http_code}\n"
+EOF
