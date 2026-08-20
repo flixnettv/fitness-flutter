@@ -86,7 +86,7 @@ class RegisterPageState extends State<RegisterPage> {
           children: [
             Icon(
               icon,
-              color: onSurface.withOpacity(0.5),
+              color: onSurface.withValues(alpha: 0.5),
             ),
             const SizedBox(
               width: 15,
@@ -94,7 +94,7 @@ class RegisterPageState extends State<RegisterPage> {
             Flexible(
               child: TextField(
                 controller: controller,
-                cursorColor: onSurface.withOpacity(0.5),
+                cursorColor: onSurface.withValues(alpha: 0.5),
                 keyboardType: keyboardType,
                 obscureText: obscure,
                 decoration: InputDecoration(
@@ -108,7 +108,7 @@ class RegisterPageState extends State<RegisterPage> {
                 onPressed: onToggleTrailing,
                 icon: Icon(
                   trailingIcon,
-                  color: onSurface.withOpacity(0.5),
+                  color: onSurface.withValues(alpha: 0.5),
                 ),
               ),
           ],
@@ -128,8 +128,8 @@ class RegisterPageState extends State<RegisterPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.secondary(context).withOpacity(0.25),
-              AppTheme.primary(context).withOpacity(0.25),
+              AppTheme.secondary(context).withValues(alpha: 0.25),
+              AppTheme.primary(context).withValues(alpha: 0.25),
             ],
           ),
         ),

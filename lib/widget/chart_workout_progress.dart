@@ -123,7 +123,7 @@ LineChartData workoutProgressData({
           FlSpot(11, 4),
         ],
         isCurved: true,
-        color: third.withOpacity(0.5),
+        color: third.withValues(alpha: 0.5),
         barWidth: 1,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),

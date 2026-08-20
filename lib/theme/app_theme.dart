@@ -55,7 +55,7 @@ class AppTheme {
           borderSide: BorderSide.none,
         ),
       ),
-      dividerColor: Colors.black.withOpacity(0.06),
+      dividerColor: Colors.black.withValues(alpha: 0.06),
       textTheme: base.textTheme.apply(
         bodyColor: Colors.black,
         displayColor: Colors.black,
@@ -86,7 +86,7 @@ class AppTheme {
         ),
       ),
       cardColor: AppColors.darkCard,
-      dividerColor: Colors.white.withOpacity(0.08),
+      dividerColor: Colors.white.withValues(alpha: 0.08),
       textTheme: base.textTheme.apply(
         bodyColor: Colors.white,
         displayColor: Colors.white,

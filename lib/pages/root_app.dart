@@ -58,7 +58,7 @@ class RootAppState extends State<RootApp> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppTheme.card(context),
-        border: Border(top: BorderSide(width: 1, color: onSurface.withOpacity(0.06))),
+        border: Border(top: BorderSide(width: 1, color: onSurface.withValues(alpha: 0.06))),
       ),
       child: Padding(
         padding:
@@ -80,7 +80,7 @@ class RootAppState extends State<RootApp> {
                     size: 28,
                     color: selected
                         ? AppTheme.third(context)
-                        : onSurface.withOpacity(0.5),
+                        : onSurface.withValues(alpha: 0.5),
                   ),
                   const SizedBox(
                     height: 5,
@@ -91,7 +91,7 @@ class RootAppState extends State<RootApp> {
                       fontSize: 10,
                       color: selected
                           ? AppTheme.third(context)
-                          : onSurface.withOpacity(0.5),
+                          : onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                   SizedBox(
@@ -170,7 +170,7 @@ class _ChartPage extends StatelessWidget {
                       dotData: const FlDotData(show: false),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: primary.withOpacity(0.3),
+                        color: primary.withValues(alpha: 0.3),
                       ),
                     ),
                   ],

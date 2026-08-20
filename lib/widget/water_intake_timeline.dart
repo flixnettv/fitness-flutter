@@ -29,7 +29,7 @@ class WaterIntakeTimeLine extends StatelessWidget {
                     waterIntakeJson[index],
                     style: TextStyle(
                       fontSize: 12,
-                      color: onSurface.withOpacity(0.5),
+                      color: onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -67,7 +67,7 @@ class WaterIntakeTimeLine extends StatelessWidget {
                     waterIntakeJson[index],
                     style: TextStyle(
                       fontSize: 12,
-                      color: onSurface.withOpacity(0.5),
+                      color: onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ],

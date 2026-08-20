@@ -169,11 +169,11 @@ class DevicesPageState extends State<DevicesPage> {
             gradient: LinearGradient(
               colors: isConnected
                   ? [AppTheme.primary(context), AppTheme.secondary(context)]
-                  : [onSurface.withOpacity(0.2), onSurface.withOpacity(0.1)],
+                  : [onSurface.withValues(alpha: 0.2), onSurface.withValues(alpha: 0.1)],
             ),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: isConnected ? Colors.white : onSurface.withOpacity(0.5), size: 24),
+          child: Icon(icon, color: isConnected ? Colors.white : onSurface.withValues(alpha: 0.5), size: 24),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),
@@ -198,7 +198,6 @@ class DevicesPageState extends State<DevicesPage> {
   }
 
   Widget _buildManualEntryCard() {
-    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Card(
       color: AppTheme.card(context),
       margin: const EdgeInsets.all(16),
@@ -271,7 +270,7 @@ class DevicesPageState extends State<DevicesPage> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: onSurface.withOpacity(0.5)),
+        prefixIcon: Icon(icon, color: onSurface.withValues(alpha: 0.5)),
         filled: true,
         fillColor: AppTheme.textField(context),
         border: OutlineInputBorder(
@@ -410,7 +409,7 @@ class DevicesPageState extends State<DevicesPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Text(
                   AppStrings.t(context, 'noData'),
-                  style: TextStyle(color: onSurface.withOpacity(0.5)),
+                  style: TextStyle(color: onSurface.withValues(alpha: 0.5)),
                 ),
               )
               else

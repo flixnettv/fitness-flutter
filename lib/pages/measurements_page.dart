@@ -161,7 +161,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
               strokeWidth: 0.5,
             ),
           ),
@@ -224,7 +224,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: AppTheme.primary(context).withOpacity(0.1),
+                color: AppTheme.primary(context).withValues(alpha: 0.1),
               ),
             ),
           ],
@@ -254,7 +254,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
               strokeWidth: 0.5,
             ),
           ),
@@ -303,7 +303,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
               ),
             ),
           ],
@@ -396,7 +396,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
                     barWidth: 2,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: false),
-                    belowBarData: BarAreaData(show: true, color: color.withOpacity(0.1)),
+                    belowBarData: BarAreaData(show: true, color: color.withValues(alpha: 0.1)),
                   ),
                 ],
               ),
@@ -418,7 +418,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
       child: Center(
         child: Text(
           message,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
         ),
       ),
     );
@@ -465,7 +465,7 @@ class MeasurementsPageState extends State<MeasurementsPage> {
             subtitle: Text(entry['value'] as String),
             trailing: Text(
               date != null ? DateFormat('MMM dd, yyyy').format(date) : '',
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5), fontSize: 12),
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5), fontSize: 12),
             ),
           ),
         );

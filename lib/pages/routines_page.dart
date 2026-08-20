@@ -92,7 +92,7 @@ class RoutinesPageState extends State<RoutinesPage> {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primary(context).withOpacity(0.4),
+              color: AppTheme.primary(context).withValues(alpha: 0.4),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -120,7 +120,7 @@ class RoutinesPageState extends State<RoutinesPage> {
           children: [
             Text(
               AppStrings.t(context, 'error'),
-              style: TextStyle(color: onSurface.withOpacity(0.5)),
+              style: TextStyle(color: onSurface.withValues(alpha: 0.5)),
             ),
             const SizedBox(height: 15),
             InkWell(
@@ -155,7 +155,7 @@ class RoutinesPageState extends State<RoutinesPage> {
       return Center(
         child: Text(
           AppStrings.t(context, 'noData'),
-          style: TextStyle(color: onSurface.withOpacity(0.5)),
+          style: TextStyle(color: onSurface.withValues(alpha: 0.5)),
         ),
       );
     }
@@ -217,7 +217,7 @@ class RoutinesPageState extends State<RoutinesPage> {
                     creationDate,
                     style: TextStyle(
                       fontSize: 13,
-                      color: onSurface.withOpacity(0.6),
+                      color: onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                   if (days.isNotEmpty) ...[
@@ -235,7 +235,7 @@ class RoutinesPageState extends State<RoutinesPage> {
             ),
             Icon(
               Icons.chevron_right,
-              color: onSurface.withOpacity(0.4),
+              color: onSurface.withValues(alpha: 0.4),
             ),
           ],
         ),

@@ -86,7 +86,7 @@ class ExercisesPageState extends State<ExercisesPage> {
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
                 hintText: AppStrings.t(context, 'search'),
-                prefixIcon: Icon(Icons.search, color: onSurface.withOpacity(0.5)),
+                prefixIcon: Icon(Icons.search, color: onSurface.withValues(alpha: 0.5)),
               ),
             ),
           ),
@@ -108,7 +108,7 @@ class ExercisesPageState extends State<ExercisesPage> {
             Text(
               AppStrings.t(context, 'error'),
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 15),
@@ -125,7 +125,7 @@ class ExercisesPageState extends State<ExercisesPage> {
         child: Text(
           AppStrings.t(context, 'noData'),
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
       );
@@ -168,7 +168,7 @@ class _ExerciseCard extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: AppTheme.primary(context).withOpacity(0.15),
+          backgroundColor: AppTheme.primary(context).withValues(alpha: 0.15),
           child: Text(
             initial,
             style: TextStyle(
@@ -183,7 +183,7 @@ class _ExerciseCard extends StatelessWidget {
         ),
         subtitle: Text(
           exercise.category,
-          style: TextStyle(color: onSurface.withOpacity(0.6)),
+          style: TextStyle(color: onSurface.withValues(alpha: 0.6)),
         ),
         trailing: Icon(
           Icons.chevron_right,

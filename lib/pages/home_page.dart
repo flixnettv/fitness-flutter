@@ -112,7 +112,7 @@ class HomePageState extends State<HomePage> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: onSurface.withOpacity(0.03),
+                      color: onSurface.withValues(alpha: 0.03),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Center(
@@ -226,7 +226,7 @@ class HomePageState extends State<HomePage> {
                 width: double.infinity,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: AppTheme.secondary(context).withOpacity(0.5),
+                  color: AppTheme.secondary(context).withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
@@ -289,7 +289,7 @@ class HomePageState extends State<HomePage> {
                 width: double.infinity,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: AppTheme.secondary(context).withOpacity(0.5),
+                  color: AppTheme.secondary(context).withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Stack(
@@ -330,7 +330,7 @@ class HomePageState extends State<HomePage> {
                       color: AppTheme.card(context),
                       boxShadow: [
                         BoxShadow(
-                          color: shadowColor.withOpacity(0.05),
+                          color: shadowColor.withValues(alpha: 0.05),
                           spreadRadius: 20,
                           blurRadius: 10,
                           offset: const Offset(0, 10),
@@ -363,7 +363,7 @@ class HomePageState extends State<HomePage> {
                                       AppStrings.t(context, 'realTimeUpdates'),
                                       style: TextStyle(
                                         fontSize: 13,
-                                        color: onSurface.withOpacity(0.5),
+                                        color: onSurface.withValues(alpha: 0.5),
                                       ),
                                     ),
                                     const SizedBox(
@@ -391,7 +391,7 @@ class HomePageState extends State<HomePage> {
                           color: AppTheme.card(context),
                           boxShadow: [
                             BoxShadow(
-                              color: shadowColor.withOpacity(0.05),
+                              color: shadowColor.withValues(alpha: 0.05),
                               spreadRadius: 20,
                               blurRadius: 10,
                               offset: const Offset(0, 10),
@@ -434,7 +434,7 @@ class HomePageState extends State<HomePage> {
                           color: AppTheme.card(context),
                           boxShadow: [
                             BoxShadow(
-                              color: shadowColor.withOpacity(0.05),
+                              color: shadowColor.withValues(alpha: 0.05),
                               spreadRadius: 20,
                               blurRadius: 10,
                               offset: const Offset(0, 10),
@@ -463,7 +463,7 @@ class HomePageState extends State<HomePage> {
                                     begin: Alignment.topCenter,
                                     colors: [
                                       AppTheme.fourth(context),
-                                      AppTheme.primary(context).withOpacity(0.5),
+                                      AppTheme.primary(context).withValues(alpha: 0.5),
                                     ],
                                   ),
                                   shape: BoxShape.circle,
@@ -550,7 +550,7 @@ class HomePageState extends State<HomePage> {
                   color: AppTheme.card(context),
                   boxShadow: [
                     BoxShadow(
-                      color: shadowColor.withOpacity(0.05),
+                      color: shadowColor.withValues(alpha: 0.05),
                       spreadRadius: 20,
                       blurRadius: 10,
                       offset: const Offset(0, 10),
@@ -582,7 +582,7 @@ class HomePageState extends State<HomePage> {
                     AppStrings.t(context, 'seeMore'),
                     style: TextStyle(
                       fontSize: 15,
-                      color: onSurface.withOpacity(0.5),
+                      color: onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -616,7 +616,7 @@ class HomePageState extends State<HomePage> {
                                   color: AppTheme.card(context),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: shadowColor.withOpacity(0.05),
+                                      color: shadowColor.withValues(alpha: 0.05),
                                       spreadRadius: 20,
                                       blurRadius: 10,
                                       offset: const Offset(0, 10),
@@ -633,7 +633,7 @@ class HomePageState extends State<HomePage> {
                                         height: 50,
                                         decoration: BoxDecoration(
                                           color: AppTheme.secondary(context)
-                                              .withOpacity(0.2),
+                                              .withValues(alpha: 0.2),
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
@@ -670,7 +670,7 @@ class HomePageState extends State<HomePage> {
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                   color: onSurface
-                                                      .withOpacity(0.5),
+                                                      .withValues(alpha: 0.5),
                                                 ),
                                               ),
                                               Stack(

@@ -31,14 +31,14 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                 width: 35,
                 height: 35,
                 decoration: BoxDecoration(
-                  color: onSurface.withOpacity(0.03),
+                  color: onSurface.withValues(alpha: 0.03),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 22,
-                    color: onSurface.withOpacity(0.3),
+                    color: onSurface.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -53,14 +53,14 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                 width: 35,
                 height: 35,
                 decoration: BoxDecoration(
-                  color: onSurface.withOpacity(0.03),
+                  color: onSurface.withValues(alpha: 0.03),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
                   child: Icon(
                     Icons.more_horiz,
                     size: 22,
-                    color: onSurface.withOpacity(0.3),
+                    color: onSurface.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -83,7 +83,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppTheme.secondary(context).withOpacity(0.3),
+                color: AppTheme.secondary(context).withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Padding(
@@ -230,7 +230,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                   BoxShadow(
                     spreadRadius: 20,
                     blurRadius: 10,
-                    color: onSurface.withOpacity(0.05),
+                    color: onSurface.withValues(alpha: 0.05),
                     offset: const Offset(0, 1),
                   )
                 ],
@@ -298,7 +298,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                   AppStrings.t(context, 'seeMore'),
                   style: TextStyle(
                     fontSize: 15,
-                    color: onSurface.withOpacity(0.5),
+                    color: onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ],
@@ -316,7 +316,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                       color: AppTheme.card(context),
                       boxShadow: [
                         BoxShadow(
-                          color: onSurface.withOpacity(0.05),
+                          color: onSurface.withValues(alpha: 0.05),
                           spreadRadius: 20,
                           blurRadius: 10,
                           offset: const Offset(0, 1),
@@ -366,7 +366,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                                           as String,
                                       style: TextStyle(
                                         fontSize: 13,
-                                        color: onSurface.withOpacity(0.5),
+                                        color: onSurface.withValues(alpha: 0.5),
                                       ),
                                     ),
                                   ],
@@ -377,7 +377,7 @@ class TodayTargetDetailPageState extends State<TodayTargetDetailPage> {
                           Icon(
                             Icons.more_vert,
                             size: 15,
-                            color: onSurface.withOpacity(0.5),
+                            color: onSurface.withValues(alpha: 0.5),
                           ),
                         ],
                       ),

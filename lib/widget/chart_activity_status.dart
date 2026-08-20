@@ -36,7 +36,7 @@ LineChartData activityData({required List<Color> colors}) {
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(
           show: true,
-          color: colors.first.withOpacity(0.3),
+          color: colors.first.withValues(alpha: 0.3),
         ),
       ),
     ],

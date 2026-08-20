@@ -32,7 +32,7 @@ class DeviceSyncService {
 
     final types = _getAllReadTypes();
     final permissions = <HealthDataAccess>[
-      for (final t in types) HealthDataAccess.READ,
+      for (final _ in types) HealthDataAccess.READ,
     ];
 
     final granted = await _health.requestAuthorization(types, permissions: permissions);
@@ -281,16 +281,6 @@ class DeviceSyncService {
     return 'health_connect';
   }
 
-  Future<void> _uploadMetrics(List<DeviceMetric> metrics) async {
-    for (final metric in metrics) {
-      try {
-        await _uploadSingleMetric(metric);
-      } catch (e) {
-        print('Failed to upload metric ${metric.type}: $e');
-      }
-    }
-  }
-
   Future<void> _uploadSingleMetric(DeviceMetric metric) async {
     // Rate limiting: small delay between uploads
     await Future.delayed(const Duration(milliseconds: 100));
@@ -355,7 +345,6 @@ class DeviceSyncService {
 
   Future<Map<String, dynamic>> getSyncStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    final syncedCount = (await _getSyncedUuids()).length;
     return {
       'lastSync': prefs.getInt(_lastSyncKey) ?? 0,
       'lastFullSync': prefs.getInt(_lastFullSyncKey) ?? 0,

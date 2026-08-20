@@ -64,7 +64,7 @@ class ExerciseDetailPageState extends State<ExerciseDetailPage> {
             Text(
               AppStrings.t(context, 'error'),
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 15),
@@ -119,7 +119,7 @@ class ExerciseDetailPageState extends State<ExerciseDetailPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
               decoration: BoxDecoration(
-                color: AppTheme.secondary(context).withOpacity(0.2),
+                color: AppTheme.secondary(context).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -135,7 +135,7 @@ class ExerciseDetailPageState extends State<ExerciseDetailPage> {
           const SizedBox(height: 10),
           Text(
             exercise.description,
-            style: TextStyle(fontSize: 15, color: onSurface.withOpacity(0.85)),
+            style: TextStyle(fontSize: 15, color: onSurface.withValues(alpha: 0.85)),
           ),
           if (exercise.muscles.isNotEmpty) ...[
             const SizedBox(height: 25),

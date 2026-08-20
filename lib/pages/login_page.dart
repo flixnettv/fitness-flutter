@@ -57,8 +57,8 @@ class LoginPageState extends State<LoginPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.secondary(context).withOpacity(0.25),
-              AppTheme.primary(context).withOpacity(0.25),
+              AppTheme.secondary(context).withValues(alpha: 0.25),
+              AppTheme.primary(context).withValues(alpha: 0.25),
             ],
           ),
         ),
@@ -110,7 +110,7 @@ class LoginPageState extends State<LoginPage> {
                           children: [
                             Icon(
                               Icons.person_outline,
-                              color: onSurface.withOpacity(0.5),
+                              color: onSurface.withValues(alpha: 0.5),
                             ),
                             const SizedBox(
                               width: 15,
@@ -118,7 +118,7 @@ class LoginPageState extends State<LoginPage> {
                             Flexible(
                               child: TextField(
                                 controller: _usernameController,
-                                cursorColor: onSurface.withOpacity(0.5),
+                                cursorColor: onSurface.withValues(alpha: 0.5),
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   hintText: AppStrings.t(context, 'username'),
@@ -146,7 +146,7 @@ class LoginPageState extends State<LoginPage> {
                           children: [
                             Icon(
                               Icons.lock_outline,
-                              color: onSurface.withOpacity(0.5),
+                              color: onSurface.withValues(alpha: 0.5),
                             ),
                             const SizedBox(
                               width: 15,
@@ -154,7 +154,7 @@ class LoginPageState extends State<LoginPage> {
                             Flexible(
                               child: TextField(
                                 controller: _passwordController,
-                                cursorColor: onSurface.withOpacity(0.5),
+                                cursorColor: onSurface.withValues(alpha: 0.5),
                                 obscureText: _obscurePassword,
                                 decoration: InputDecoration(
                                   hintText: AppStrings.t(context, 'password'),
@@ -172,7 +172,7 @@ class LoginPageState extends State<LoginPage> {
                                 _obscurePassword
                                     ? Icons.visibility_outlined
                                     : Icons.visibility_off_outlined,
-                                color: onSurface.withOpacity(0.5),
+                                color: onSurface.withValues(alpha: 0.5),
                               ),
                             )
                           ],
@@ -280,7 +280,7 @@ class LoginPageState extends State<LoginPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: onSurface.withOpacity(0.1),
+                              color: onSurface.withValues(alpha: 0.1),
                             ),
                           ),
                           child: Center(
@@ -299,7 +299,7 @@ class LoginPageState extends State<LoginPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: onSurface.withOpacity(0.1),
+                              color: onSurface.withValues(alpha: 0.1),
                             ),
                           ),
                           child: Center(
