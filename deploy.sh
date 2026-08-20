@@ -3,7 +3,7 @@
 # Usage:
 #   ./deploy.sh           # pull + build web only (skips if already up to date)
 #   ./deploy.sh force     # always pull + rebuild web
-#   ./deploy.sh apk       # pull + build web + build APK
+#   ./deploy.sh apk       # pull + build web + build APK + publish APK for download
 set -euo pipefail
 export HOME="${HOME:-/root}"
 
@@ -29,6 +29,7 @@ cd "$APP_DIR"
 
 log "== Pulling latest from origin/main =="
 git fetch origin main
+NEED_WEB=0
 if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] && [ "$FORCE" = "0" ]; then
   log "Already up to date at $(git rev-parse --short HEAD)."
   if [ "$BUILD_APK" = "0" ]; then
@@ -37,20 +38,26 @@ if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] && [ "$FORCE" = 
   fi
 else
   git reset --hard origin/main
+  NEED_WEB=1
   log "Updated to $(git rev-parse --short HEAD)."
 fi
 
 log "== flutter pub get =="
 flutter pub get
 
-log "== Building web (release) =="
-flutter build web --release --no-tree-shake-icons
-log "Web build ready: $APP_DIR/build/web"
+if [ "$NEED_WEB" = "1" ]; then
+  log "== Building web (release) =="
+  flutter build web --release --no-tree-shake-icons
+  log "Web build ready: $APP_DIR/build/web"
+fi
 
 if [ "$BUILD_APK" = "1" ]; then
   log "== Building APK (release) =="
   flutter build apk --release
   log "APK ready: $APP_DIR/build/app/outputs/flutter-apk/app-release.apk"
+  mkdir -p "$APP_DIR/build/web/apk"
+  cp -f "$APP_DIR/build/app/outputs/flutter-apk/app-release.apk" "$APP_DIR/build/web/apk/app-release.apk"
+  log "APK published for download: https://Fitness.hftv.qzz.io/apk/app-release.apk"
 fi
 
 log "== Done. Live at https://Fitness.hftv.qzz.io/ =="
