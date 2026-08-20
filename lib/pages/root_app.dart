@@ -7,6 +7,7 @@ import 'package:fitness_flutter/theme/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RootApp extends StatefulWidget {
   const RootApp({super.key});
@@ -277,6 +278,25 @@ class _ProfilePage extends StatelessWidget {
                     value: state.isArabic,
                     onChanged: (value) {
                       state.setArabic(value);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.download),
+                    title: Text(AppStrings.t(context, 'downloadApp')),
+                    subtitle: const Text('Android'),
+                    onTap: () async {
+                      final uri = Uri.parse(
+                          'https://Fitness.hftv.qzz.io/apk/app-release.apk');
+                      final launched = await launchUrl(
+                          uri,
+                          mode: LaunchMode.externalApplication);
+                      if (!launched && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Unable to open download link'),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],

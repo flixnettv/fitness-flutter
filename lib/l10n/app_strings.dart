@@ -75,6 +75,7 @@ class AppStrings {
     'entrySaved': 'Entry saved successfully',
     'measurementCategories': 'Measurement Categories',
     'viewHistory': 'View History',
+    'downloadApp': 'Download App',
   };
 
   static const Map<String, String> ar = {
@@ -149,6 +150,7 @@ class AppStrings {
     'entrySaved': 'تم حفظ الإدخال بنجاح',
     'measurementCategories': 'فئات القياسات',
     'viewHistory': 'عرض السجل',
+    'downloadApp': 'تحميل التطبيق',
   };
 
   static String t(BuildContext context, String key) {
